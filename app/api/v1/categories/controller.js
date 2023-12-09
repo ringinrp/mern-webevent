@@ -70,6 +70,7 @@ const update = async (req, res, next) => {
             new: true,
             runValidators: true
         });
+        // runvalidators untuk menjalankan model, new untuk menampilkan yang baru
         if (!result) {
             return res.status(400).json({
                 message: 'Id categories tidak ditemukan!!'
