@@ -1,14 +1,18 @@
-const Categories = require('./model');
+const {
+    StatusCodes
+} = require('http-status-codes');
+const {
+    getAllCategories,
+    createCategories,
+    getOneCategories,
+    updateCategories,
+    deleteCatgories
+} = require('../../../services/monggose/categories');
 
 const create = async (req, res, next) => {
     try {
-        const {
-            name
-        } = req.body;
-        const result = await Categories.create({
-            name
-        });
-        res.status(200).json({
+        const result = await createCategories(req);
+        res.status(StatusCodes.CREATED).json({
             data: result,
 
         });
@@ -19,8 +23,9 @@ const create = async (req, res, next) => {
 
 const index = async (req, res, next) => {
     try {
-        const result = await Categories.find().select('_id name');
-        res.status(201).json({
+        const result = await getAllCategories();
+
+        res.status(StatusCodes.OK).json({
             data: result,
 
         });
@@ -31,20 +36,9 @@ const index = async (req, res, next) => {
 
 const find = async (req, res, next) => {
     try {
-        const {
-            id
-        } = req.params;
-        const result = await Categories.findOne({
-            _id: id
-        });
+        const result = await getOneCategories(req);
 
-        if (!result) {
-            return res.status(400).json({
-                message: 'Id categories tidak ditemukan!!'
-            });
-        }
-
-        res.status(201).json({
+        res.status(StatusCodes.OK).json({
             data: result,
 
         });
@@ -55,31 +49,10 @@ const find = async (req, res, next) => {
 
 const update = async (req, res, next) => {
     try {
-        const {
-            id
-        } = req.params;
-        const {
-            name
-        } = req.body;
-
-        const result = await Categories.findOneAndUpdate({
-            _id: id
-        }, {
-            name
-        }, {
-            new: true,
-            runValidators: true
-        });
+        const result = await updateCategories(req);
         // runvalidators untuk menjalankan model, new untuk menampilkan yang baru
-        if (!result) {
-            return res.status(400).json({
-                message: 'Id categories tidak ditemukan!!'
-            });
-        }
 
-        result.name = name
-        result.save();
-        res.status(200).json({
+        res.status(StatusCodes.OK).json({
             data: result,
         });
 
@@ -90,14 +63,9 @@ const update = async (req, res, next) => {
 
 const destroy = async (req, res, next) => {
     try {
-        const {
-            id
-        } = req.params;
-        const result = await Categories.findByIdAndDelete({
-            _id: id
-        });
+        const result = await deleteCatgories(req);
 
-        res.status(200).json({
+        res.status(StatusCodes.OK).json({
             data: result,
         });
     } catch (err) {
