@@ -4,10 +4,12 @@ const {
 
 const {
     createImges
-} = require('../../../services/monggosearch/images');
+} = require('../../../services/monggose/images');
 
 const create = async (req, res, next) => {
     try {
+        console.log('req.file');
+        console.log(req.file);
         const result = await create(req, res, next);
 
         res.status(StatusCodes.CREATED).json({

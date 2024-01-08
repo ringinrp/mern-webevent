@@ -10,6 +10,7 @@ const app = express();
 
 //router
 const cateoriesRouter = require('./app/api/v1/categories/router');
+const imagesRouter = require('./app/api/v1/images/router');
 
 const v1 = '/api/v1/cms';
 const notFoundMiddleware = require('./app/middlewares/not-found');
@@ -35,6 +36,7 @@ app.post('/', (req, res) => {
 });
 
 app.use(v1, cateoriesRouter);
+app.use(v1, imagesRouter);
 
 app.use(notFoundMiddleware);
 app.use(handleErrorMiddleware);
